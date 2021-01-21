@@ -6,7 +6,14 @@ namespace InvertedIndex
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var FoldersParser = new FoldersParser(new[]
+            {
+                "..\\..\\..\\1",
+                "..\\..\\..\\2",
+                "..\\..\\..\\3",
+                "..\\..\\..\\4",
+                "..\\..\\..\\5",
+            });
         }
     }
 }
