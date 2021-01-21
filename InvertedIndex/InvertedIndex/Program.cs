@@ -8,7 +8,7 @@ namespace InvertedIndex
         private static int _numberOfTasks = 4;
         static async System.Threading.Tasks.Task Main(string[] args)
         {
-            var FoldersParser = new FoldersParser(new[]
+            var foldersParser = new FoldersParser(new[]
             {
                 "D:\\Univer\\parallel\\course\\1",
                 "D:\\Univer\\parallel\\course\\2",
@@ -16,7 +16,12 @@ namespace InvertedIndex
                 "D:\\Univer\\parallel\\course\\4",
                 "D:\\Univer\\parallel\\course\\5",
             });
-            ConcurrentDictionary<string, ConcurrentBag<string>> index = await FoldersParser.ProcessFiles(_numberOfTasks);
+            ConcurrentDictionary<string, ConcurrentBag<string>> index = await foldersParser.ProcessFiles(_numberOfTasks);
+
+            foreach (string file in index["test"])
+            {
+                Console.WriteLine(file);
+            }
         }
     }
 }

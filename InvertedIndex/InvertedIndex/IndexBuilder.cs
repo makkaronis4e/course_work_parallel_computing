@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace InvertedIndex
@@ -12,8 +13,9 @@ namespace InvertedIndex
 		public async Task ParseFile(string fileName)
 		{
 			string text = await File.ReadAllTextAsync(fileName);
+			string simplifiedText = new Regex("[*'\\+/*,.:_&#^@\\\\\"]").Replace(text.ToLower().Replace("<br />", " "), " ");
 
-			string[] words = text.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+			string[] words = simplifiedText.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
 			foreach (string word in words)
 			{
