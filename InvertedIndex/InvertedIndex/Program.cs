@@ -18,10 +18,33 @@ namespace InvertedIndex
             });
             ConcurrentDictionary<string, ConcurrentBag<string>> index = await foldersParser.ProcessFiles(_numberOfTasks);
 
-            foreach (string file in index["test"])
-            {
-                Console.WriteLine(file);
-            }
-        }
-    }
+			while (true)
+			{
+				Console.WriteLine("Enter word to search for (type <exit> to exit):");
+				string searchWord = Console.ReadLine();
+				if (searchWord == "<exit>")
+				{
+					Console.WriteLine("Exiting");
+					return;
+				}
+
+				if (index.ContainsKey(searchWord))
+				{
+					Console.WriteLine($"Word {searchWord} is used in following {index[searchWord].Count} files:");
+					foreach (string file in index[searchWord])
+					{
+						Console.WriteLine(file);
+					}
+				}
+				else
+				{
+					Console.WriteLine($"Word {searchWord} is not used in any file");
+				}
+
+				Console.Write("Press any key for another search...");
+				Console.ReadLine();
+				Console.Clear();
+			}
+		}
+	}
 }
