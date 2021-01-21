@@ -10,8 +10,9 @@ namespace InvertedIndex
     public class FoldersParser
     {
         private readonly ConcurrentQueue<string> _filesToParse;
-        
-        public FoldersParser(IEnumerable<string> folders)
+		private readonly IndexBuilder _builder = new();
+
+		public FoldersParser(IEnumerable<string> folders)
         {
             _filesToParse = new ConcurrentQueue<string>(folders.SelectMany(Directory.GetFiles));
         }
@@ -28,7 +29,7 @@ namespace InvertedIndex
 			await Task.WhenAll(tasks);
 
 			Console.WriteLine("All files processed");
-			return null;
+			return _builder.Build();
 		}
 
 		private async Task ParseTask(int id)
@@ -36,7 +37,8 @@ namespace InvertedIndex
 			while (!_filesToParse.IsEmpty)
 			{
 				_filesToParse.TryDequeue(out string fileToParse);
-				Console.WriteLine($"{id}: I took {fileToParse}");
+				Console.WriteLine($"TASK {id}: I took {fileToParse}");
+				await _builder.ParseFile(fileToParse);
 			}
 			Console.WriteLine($"{id}: Finished");
 		}
